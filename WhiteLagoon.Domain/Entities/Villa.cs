@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,8 +10,16 @@ namespace WhiteLagoon.Domain.Entities
 {
     public class Villa
     {
+        
         public int Id { get; set; }
+
+        [Display(Name="名稱")]
+        [Required]
+        [MaxLength(50)]
         public string? Name { get; set; }
+
+        [DisplayName("描述")]
+        [Required]
         public string? Description { get; set; }
         public Double Price { get; set; }
         public int Sqft { get; set; }
