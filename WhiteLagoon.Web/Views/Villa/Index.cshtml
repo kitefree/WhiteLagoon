@@ -19,39 +19,54 @@
                 </a>
             </div>
         </div>
-
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Sqft</th>
-                    <th>Occupancy</th>
-                    <th>Image</th>
-                    <th>Created Date</th>
-                    <th>Updated Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var room in Model)
-                {
-                    <tr>
-                        <td>@room.Name</td>
-                        <td>@room.Description</td>
-                        <td>@room.Price</td>
-                        <td>@room.Sqft</td>
-                        <td>@room.Occupancy</td>
-                        <td>
-                            <img src="@room.ImageUrl" alt="Room Image" width="50" height="50" />
-                        </td>
-                        <td>@room.CreatedDate?.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                        <td>@room.UpdatedDate?.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope ="col">Price</th>
+                            <th scope="col">Sqft</th>
+                            <th scope="col">Occupancy</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Created Date</th>
+                            <th scope="col">Updated Date</th>
+                            <th scope="col">Edit / Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var room in Model)
+                        {
+                            <tr>
+                                <td scope="row">@room.Name</td>
+                                <td scope="row">@room.Description</td>
+                                <td scope="row">@room.Price</td>
+                                <td scope="row">@room.Sqft</td>
+                                <td scope="row">@room.Occupancy</td>
+                                <td scope="row">
+                                    <img src="@room.ImageUrl" alt="Room Image" width="50" height="50" />
+                                </td>
+                                <td scope="row">@room.CreatedDate?.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                <td scope="row">@room.UpdatedDate?.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                <td scope="row">
+                                    <div class="w-75 btn-group" role="group">
+                                        <a asp-controller="Villa" asp-action="Update" asp-route-villaId="@room.Id" class="btn btn-success mx-2">
+                                            <i class="bi bi-pencil-square"></i> Edit
+                                        </a>
+                                        <a asp-controller="Villa" asp-action="Delete" asp-route-villaId="@room.Id" class="btn btn-danger mx-2">
+                                            <i class="bi bi-trash-fill"></i> Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>

@@ -52,7 +52,7 @@
                     <button type="submit" class="btn btn-success w-100"><i class="bi bi-check-circle"></i>Create</button>
                     </div>
                 <div class="col-6 col-md-3">
-                    <a asp-controller="Villa" asp-action="Index" class="btn btn-secondary w-100"><i class="bi bi-x-circle"></i>Cancel</i></a>
+                    <a asp-controller="Villa" asp-action="Index" class="btn btn-secondary w-100"><i class="bi bi-x-circle"></i>Cancel</a>
                 </div>
             </div>
 
@@ -60,3 +60,8 @@
         </form>
     </div>
 </div>
+@section Scripts{
+@{
+    <partial name="_ValidationScriptsPartial"/>
+}
+}

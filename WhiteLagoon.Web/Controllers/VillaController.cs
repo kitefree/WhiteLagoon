@@ -27,7 +27,7 @@ namespace WhiteLagoon.Web.Controllers
         public IActionResult Create(Villa villa) {
             if(villa.Name == villa.Description)
             {
-                ModelState.AddModelError("", "名稱與描述不能一致");
+                ModelState.AddModelError("name", "名稱與描述不能一致");
             }
             if(ModelState.IsValid)
             {
@@ -38,11 +38,65 @@ namespace WhiteLagoon.Web.Controllers
             
             return View();
         }
-        
-
         public IActionResult Edit()
         {
             return View();
         }
+
+        public IActionResult Update(int villaId)
+        {
+            Villa? villa = _db.Villas.FirstOrDefault(u=>u.Id == villaId);
+            if(villa == null) {
+                //return NotFound();
+                return RedirectToAction("Error", "Home");
+            }
+
+            return View(villa);
+        }
+
+        [HttpPost]
+        public IActionResult Update(Villa villa)
+        {
+            if (villa.Name == villa.Description)
+            {
+                ModelState.AddModelError("name", "名稱與描述不能一致");
+            }
+            if (ModelState.IsValid)
+            {
+                _db.Update(villa);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
+
+        public IActionResult Delete(int villaId)
+        {
+            Villa? obj = _db.Villas.FirstOrDefault(u => u.Id == villaId);
+            if (obj == null)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Villa villa)
+        {
+            Villa? obj = _db.Villas.FirstOrDefault(u => u.Id == villa.Id);
+            if (obj == null)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
+            _db.Remove(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
+
     }
 }
