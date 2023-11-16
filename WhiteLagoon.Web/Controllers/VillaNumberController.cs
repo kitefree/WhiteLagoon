@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using WhiteLagoon.Domain.Entities;
 using WhiteLagoon.Infrastructure.Data;
@@ -19,13 +20,19 @@ namespace WhiteLagoon.Web.Controllers
         }
 
         public IActionResult Create()
-        {            
+        {
+            IEnumerable<SelectListItem> list = _db.Villas.Select(u => new SelectListItem { 
+                Text = u.Name,
+                Value = u.Id.ToString()
+            });
+            ViewData["VillaList"] = list;
             return View();
         }
 
         [HttpPost]
         public IActionResult Create(VillaNumber villaNumber) {
 
+            ModelState.Remove("Villa");
             if(ModelState.IsValid)
             {
                 _db.Add(villaNumber);
@@ -82,7 +89,7 @@ namespace WhiteLagoon.Web.Controllers
         [HttpPost]
         public IActionResult Delete(VillaNumber villaNumber)
         {
-            Villa? obj = _db.Villas.FirstOrDefault(u => u.Id == villa.Id);
+            VillaNumber? obj = _db.VillaNumbers.FirstOrDefault(u => u.VillaId == villaNumber.VillaId);
             if (obj == null)
             {
                 TempData["error"] = "刪除失敗！";

@@ -16,3 +16,4 @@
 - 請出「TempData」相關題目，提供選項及答案
 - 請出「partial view」相關題目，提供選項及答案
 - 請出「Global using statements」相關題目，提供選項及答案
+- 請出「ModelState.IsValid 時有些欄位要略過驗證如何寫」相關題目，提供選項及答案
