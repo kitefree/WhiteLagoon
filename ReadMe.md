@@ -11,3 +11,8 @@
     <partial name="_ValidationScriptsPartial"/>
 }
 }」相關題目，提供選項及答案 
+
+
+- 請出「TempData」相關題目，提供選項及答案
+- 請出「partial view」相關題目，提供選項及答案
+- 請出「Global using statements」相關題目，提供選項及答案

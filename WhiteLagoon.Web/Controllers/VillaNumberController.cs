@@ -5,17 +5,17 @@ using WhiteLagoon.Infrastructure.Data;
 
 namespace WhiteLagoon.Web.Controllers
 {
-    public class VillaController : Controller
+    public class VillaNumberController : Controller
     {
         private readonly ApplicationDbContext _db;
-        public VillaController(ApplicationDbContext db)
+        public VillaNumberController(ApplicationDbContext db)
         {
             _db = db;
         }
         public IActionResult Index()
         {
-            var villas = _db.Villas.ToList();
-            return View(villas);
+            var villaNumbers = _db.VillaNumbers.ToList();
+            return View(villaNumbers);
         }
 
         public IActionResult Create()
@@ -24,14 +24,11 @@ namespace WhiteLagoon.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Villa villa) {
-            if(villa.Name == villa.Description)
-            {
-                ModelState.AddModelError("name", "名稱與描述不能一致");
-            }
+        public IActionResult Create(VillaNumber villaNumber) {
+
             if(ModelState.IsValid)
             {
-                _db.Add(villa);
+                _db.Add(villaNumber);
                 _db.SaveChanges();
                 TempData["success"] = "新增成功！";
                 return RedirectToAction("Index");
@@ -44,27 +41,25 @@ namespace WhiteLagoon.Web.Controllers
             return View();
         }
 
-        public IActionResult Update(int villaId)
+        public IActionResult Update(int villa_Number)
         {
-            Villa? villa = _db.Villas.FirstOrDefault(u=>u.Id == villaId);
-            if(villa == null) {
-                //return NotFound();
-                return RedirectToAction("Error", "Home");
-            }
+            //villaNumber? villaNumber = _db.VillaNumbers.FirstOrDefault(u=>u.Villa_Number == villa_Number);
+            //if(villaNumber == null) {
+            //    //return NotFound();
+            //    return RedirectToAction("Error", "Home");
+            //}
 
-            return View(villa);
+            //return View(villaNumber);
+            return View();
         }
 
         [HttpPost]
-        public IActionResult Update(Villa villa)
+        public IActionResult Update(VillaNumber villaNumber)
         {
-            if (villa.Name == villa.Description)
-            {
-                ModelState.AddModelError("name", "名稱與描述不能一致");
-            }
+
             if (ModelState.IsValid)
             {
-                _db.Update(villa);
+                _db.Update(villaNumber);
                 _db.SaveChanges();
                 TempData["success"] = "更新成功！";
                 return RedirectToAction("Index");
@@ -85,7 +80,7 @@ namespace WhiteLagoon.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(Villa villa)
+        public IActionResult Delete(VillaNumber villaNumber)
         {
             Villa? obj = _db.Villas.FirstOrDefault(u => u.Id == villa.Id);
             if (obj == null)
