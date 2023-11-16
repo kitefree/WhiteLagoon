@@ -25,8 +25,9 @@
                     <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
+                                
+                                <th scope="col">Villa Name</th>
                                 <th scope="col">Villa_Number</th>
-                                <th scope="col">VillaId</th>
                                 <th scope="col">SpecialDetails</th>
                                 <th scope="col">Edit / Delete</th>
                             </tr>
@@ -34,18 +35,18 @@
                         <tbody>
                             @foreach (var obj in Model)
                             {
-                                <tr>
+                                <tr>                                    
+                                    <td scope="row">@obj.Villa.Name</td>
                                     <td scope="row">@obj.Villa_Number</td>
-                                    <td scope="row">@obj.VillaId</td>
                                     <td scope="row">@obj.SpecialDetails</td>
 
 
                                     <td scope="row">
                                         <div class="w-75 btn-group" role="group">
-                                            <a asp-controller="Villa" asp-action="Update" asp-route-villaNumberId="@obj.Villa_Number" class="btn btn-success mx-2">
+                                            <a asp-controller="VillaNumber" asp-action="Update" asp-route-villaNumberId="@obj.Villa_Number" class="btn btn-success mx-2">
                                                 <i class="bi bi-pencil-square"></i> Edit
                                             </a>
-                                            <a asp-controller="Villa" asp-action="Delete" asp-route-villaNumberId="@obj.Villa_Number" class="btn btn-danger mx-2">
+                                            <a asp-controller="VillaNumber" asp-action="Delete" asp-route-villaNumberId="@obj.Villa_Number" class="btn btn-danger mx-2">
                                                 <i class="bi bi-trash-fill"></i> Delete
                                             </a>
                                         </div>

@@ -16,6 +16,7 @@ namespace WhiteLagoon.Domain.Entities
         [DisplayName("Villa Number")]
         public int Villa_Number { get; set; }
 
+        [Display(Name = "別墅選項")]
         [ForeignKey("Villa")]
         public int VillaId { get; set; }
         public Villa Villa { get; set; }

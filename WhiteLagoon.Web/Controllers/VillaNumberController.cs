@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using WhiteLagoon.Domain.Entities;
 using WhiteLagoon.Infrastructure.Data;
+using WhiteLagoon.Web.ViewModels;
 
 namespace WhiteLagoon.Web.Controllers
 {
@@ -15,19 +17,24 @@ namespace WhiteLagoon.Web.Controllers
         }
         public IActionResult Index()
         {
-            var villaNumbers = _db.VillaNumbers.ToList();
+            var villaNumbers = _db.VillaNumbers.Include(u=>u.Villa).ToList();
             return View(villaNumbers);
         }
 
         public IActionResult Create()
         {
-            IEnumerable<SelectListItem> list = _db.Villas.Select(u => new SelectListItem { 
-                Text = u.Name,
-                Value = u.Id.ToString()
-            });
+            VillaNumberVM villaNumberVM = new()
+            {
+                VillaList = _db.Villas.Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                })
+
+            };
+
             
-            ViewBag.VillaList = list;
-            return View();
+            return View(villaNumberVM);
         }
 
         [HttpPost]
@@ -44,36 +51,47 @@ namespace WhiteLagoon.Web.Controllers
             
             return View();
         }
-        public IActionResult Edit()
-        {
-            return View();
-        }
 
-        public IActionResult Update(int villa_Number)
-        {
-            //villaNumber? villaNumber = _db.VillaNumbers.FirstOrDefault(u=>u.Villa_Number == villa_Number);
-            //if(villaNumber == null) {
-            //    //return NotFound();
-            //    return RedirectToAction("Error", "Home");
-            //}
 
-            //return View(villaNumber);
-            return View();
+        public IActionResult Update(int villaNumberId)
+        {
+            VillaNumberVM villaNumberVM = new()
+            {
+                VillaList = _db.Villas.Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                }),
+                VillaNumber = _db.VillaNumbers.FirstOrDefault(u => u.Villa_Number == villaNumberId)
+            };
+            
+            if (villaNumberVM.VillaNumber == null)
+            {
+                //return NotFound();
+                return RedirectToAction("Error", "Home");
+            }
+
+            return View(villaNumberVM);
+            
         }
 
         [HttpPost]
         public IActionResult Update(VillaNumber villaNumber)
         {
-
-            if (ModelState.IsValid)
+            VillaNumber? obj = _db.VillaNumbers.FirstOrDefault(u => u.Villa_Number == villaNumber.Villa_Number);
+            if (obj is not null)
             {
-                _db.Update(villaNumber);
+                TempData["error"] = $"Villa_Number 已存在";                
+            }
+            else if (ModelState.IsValid)
+            {
+                _db.Update(obj);
                 _db.SaveChanges();
                 TempData["success"] = "更新成功！";
                 return RedirectToAction("Index");
             }
-
             return View();
+
         }
 
         public IActionResult Delete(int villaId)
