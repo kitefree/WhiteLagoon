@@ -23,9 +23,10 @@ namespace WhiteLagoon.Web.Controllers
 
         public IActionResult Create()
         {
+            //以view model 回傳
             VillaNumberVM villaNumberVM = new()
             {
-                VillaList = _db.Villas.Select(u => new SelectListItem
+                VillaList = _db.Villas.ToList().Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
@@ -38,18 +39,46 @@ namespace WhiteLagoon.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(VillaNumber villaNumber) {
-
-            ModelState.Remove("Villa");
-            if(ModelState.IsValid)
-            {
-                _db.Add(villaNumber);
-                _db.SaveChanges();
-                TempData["success"] = "新增成功！";
-                return RedirectToAction("Index");
-            }
+        public IActionResult Create(VillaNumberVM villaNumberVm) {
             
-            return View();
+            //移除不必要驗證屬性
+            ModelState.Remove("VillaNumber.Villa");
+                      
+            //第一關驗證
+            if (!ModelState.IsValid)
+            {
+                villaNumberVm.VillaList =
+                 _db.Villas.ToList().Select(u => new SelectListItem
+                 {
+                     Text = u.Name,
+                     Value = u.Id.ToString()
+                 });
+
+                TempData["error"] = "新增失敗！";
+                return View(villaNumberVm);
+            }
+
+            //第二關驗證
+            bool isNumberExists = _db.VillaNumbers.Any(u => u.Villa_Number == villaNumberVm.VillaNumber.Villa_Number);
+
+            if (isNumberExists)
+            {
+                villaNumberVm.VillaList =
+                 _db.Villas.ToList().Select(u => new SelectListItem
+                 {
+                     Text = u.Name,
+                     Value = u.Id.ToString()
+                 });
+                TempData["error"] = $"新增失敗！Villa_Number {villaNumberVm.VillaNumber.Villa_Number.ToString()}已存在！";
+                return View(villaNumberVm);
+            }
+
+            //闖關成功，寫入資料庫
+            _db.Add(villaNumberVm.VillaNumber);
+            _db.SaveChanges();
+            TempData["success"] = "新增成功！";
+            return RedirectToAction(nameof(Index));
+
         }
 
 
@@ -76,39 +105,61 @@ namespace WhiteLagoon.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(VillaNumber villaNumber)
+        public IActionResult Update(VillaNumberVM villaNumberVm)
         {
-            VillaNumber? obj = _db.VillaNumbers.FirstOrDefault(u => u.Villa_Number == villaNumber.Villa_Number);
-            if (obj is not null)
+            //移除不必要驗證屬性
+            ModelState.Remove("VillaNumber.Villa");
+
+            //第一關驗證
+            if (!ModelState.IsValid)
             {
-                TempData["error"] = $"Villa_Number 已存在";                
+                villaNumberVm.VillaList =
+                 _db.Villas.ToList().Select(u => new SelectListItem
+                 {
+                     Text = u.Name,
+                     Value = u.Id.ToString()
+                 });
+
+                TempData["error"] = "更新失敗！";
+                return View(villaNumberVm);
             }
-            else if (ModelState.IsValid)
-            {
-                _db.Update(obj);
-                _db.SaveChanges();
-                TempData["success"] = "更新成功！";
-                return RedirectToAction("Index");
-            }
-            return View();
+
+            //闖關成功，寫入資料庫
+            _db.Update(villaNumberVm.VillaNumber);
+            _db.SaveChanges();
+            TempData["success"] = "更新成功！";
+            return RedirectToAction(nameof(Index));
+
+            
 
         }
 
-        public IActionResult Delete(int villaId)
+        public IActionResult Delete(int villaNumberId)
         {
-            Villa? obj = _db.Villas.FirstOrDefault(u => u.Id == villaId);
-            if (obj == null)
+            VillaNumberVM villaNumberVM = new()
             {
+                VillaList = _db.Villas.Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                }),
+                VillaNumber = _db.VillaNumbers.FirstOrDefault(u => u.Villa_Number == villaNumberId)
+            };
+
+            if (villaNumberVM.VillaNumber == null)
+            {
+                //return NotFound();
                 return RedirectToAction("Error", "Home");
             }
 
-            return View(obj);
+
+            return View(villaNumberVM);
         }
 
         [HttpPost]
-        public IActionResult Delete(VillaNumber villaNumber)
+        public IActionResult Delete(VillaNumberVM villaNumberVm)
         {
-            VillaNumber? obj = _db.VillaNumbers.FirstOrDefault(u => u.VillaId == villaNumber.VillaId);
+            VillaNumber? obj = _db.VillaNumbers.FirstOrDefault(u => u.Villa_Number == villaNumberVm.VillaNumber.Villa_Number);
             if (obj == null)
             {
                 TempData["error"] = "刪除失敗！";
@@ -118,7 +169,7 @@ namespace WhiteLagoon.Web.Controllers
             _db.Remove(obj);
             _db.SaveChanges();
             TempData["success"] = "刪除成功！";
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
 

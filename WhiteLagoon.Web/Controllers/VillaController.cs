@@ -34,7 +34,7 @@ namespace WhiteLagoon.Web.Controllers
                 _db.Add(villa);
                 _db.SaveChanges();
                 TempData["success"] = "新增成功！";
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             
             return View();
@@ -63,7 +63,7 @@ namespace WhiteLagoon.Web.Controllers
                 _db.Update(villa);
                 _db.SaveChanges();
                 TempData["success"] = "更新成功！";
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
 
             return View();
@@ -93,7 +93,7 @@ namespace WhiteLagoon.Web.Controllers
             _db.Remove(obj);
             _db.SaveChanges();
             TempData["success"] = "刪除成功！";
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
 
