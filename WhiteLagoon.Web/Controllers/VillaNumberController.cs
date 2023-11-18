@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using WhiteLagoon.Application.Common.Interfaces;
 using WhiteLagoon.Domain.Entities;
 using WhiteLagoon.Infrastructure.Data;
 using WhiteLagoon.Web.ViewModels;
@@ -10,14 +11,14 @@ namespace WhiteLagoon.Web.Controllers
 {
     public class VillaNumberController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public VillaNumberController(ApplicationDbContext db)
+        private IUnitOfWork _unitOfWork;
+        public VillaNumberController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            var villaNumbers = _db.VillaNumbers.Include(u=>u.Villa).ToList();
+            var villaNumbers = _unitOfWork.VillaNumber.GetAll(includeProperties: "Villa");
             return View(villaNumbers);
         }
 
@@ -26,11 +27,11 @@ namespace WhiteLagoon.Web.Controllers
             //以view model 回傳
             VillaNumberVM villaNumberVM = new()
             {
-                VillaList = _db.Villas.ToList().Select(u => new SelectListItem
+                VillaList = _unitOfWork.Villa.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
-                })
+                }).ToList()
 
             };
 
@@ -48,7 +49,7 @@ namespace WhiteLagoon.Web.Controllers
             if (!ModelState.IsValid)
             {
                 villaNumberVm.VillaList =
-                 _db.Villas.ToList().Select(u => new SelectListItem
+                 _unitOfWork.Villa.GetAll().Select(u => new SelectListItem
                  {
                      Text = u.Name,
                      Value = u.Id.ToString()
@@ -59,23 +60,23 @@ namespace WhiteLagoon.Web.Controllers
             }
 
             //第二關驗證
-            bool isNumberExists = _db.VillaNumbers.Any(u => u.Villa_Number == villaNumberVm.VillaNumber.Villa_Number);
+            bool isNumberExists = _unitOfWork.VillaNumber.Any(u => u.Villa_Number == villaNumberVm.VillaNumber.Villa_Number);
 
             if (isNumberExists)
             {
                 villaNumberVm.VillaList =
-                 _db.Villas.ToList().Select(u => new SelectListItem
+                 _unitOfWork.Villa.GetAll().Select(u => new SelectListItem
                  {
                      Text = u.Name,
                      Value = u.Id.ToString()
-                 });
+                 }).ToList();
                 TempData["error"] = $"新增失敗！Villa_Number {villaNumberVm.VillaNumber.Villa_Number.ToString()}已存在！";
                 return View(villaNumberVm);
             }
 
             //闖關成功，寫入資料庫
-            _db.Add(villaNumberVm.VillaNumber);
-            _db.SaveChanges();
+            _unitOfWork.VillaNumber.Add(villaNumberVm.VillaNumber);
+            _unitOfWork.Save();
             TempData["success"] = "新增成功！";
             return RedirectToAction(nameof(Index));
 
@@ -86,12 +87,12 @@ namespace WhiteLagoon.Web.Controllers
         {
             VillaNumberVM villaNumberVM = new()
             {
-                VillaList = _db.Villas.Select(u => new SelectListItem
+                VillaList = _unitOfWork.Villa.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
-                }),
-                VillaNumber = _db.VillaNumbers.FirstOrDefault(u => u.Villa_Number == villaNumberId)
+                }).ToList(),
+                VillaNumber = _unitOfWork.VillaNumber.Get(u => u.Villa_Number == villaNumberId)
             };
             
             if (villaNumberVM.VillaNumber == null)
@@ -114,19 +115,19 @@ namespace WhiteLagoon.Web.Controllers
             if (!ModelState.IsValid)
             {
                 villaNumberVm.VillaList =
-                 _db.Villas.ToList().Select(u => new SelectListItem
+                 _unitOfWork.Villa.GetAll().Select(u => new SelectListItem
                  {
                      Text = u.Name,
                      Value = u.Id.ToString()
-                 });
+                 }).ToList();
 
                 TempData["error"] = "更新失敗！";
                 return View(villaNumberVm);
             }
 
             //闖關成功，寫入資料庫
-            _db.Update(villaNumberVm.VillaNumber);
-            _db.SaveChanges();
+            _unitOfWork.VillaNumber.Update(villaNumberVm.VillaNumber);
+            _unitOfWork.Save();
             TempData["success"] = "更新成功！";
             return RedirectToAction(nameof(Index));
 
@@ -138,12 +139,12 @@ namespace WhiteLagoon.Web.Controllers
         {
             VillaNumberVM villaNumberVM = new()
             {
-                VillaList = _db.Villas.Select(u => new SelectListItem
+                VillaList = _unitOfWork.Villa.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
-                }),
-                VillaNumber = _db.VillaNumbers.FirstOrDefault(u => u.Villa_Number == villaNumberId)
+                }).ToList(),
+                VillaNumber = _unitOfWork.VillaNumber.Get(u => u.Villa_Number == villaNumberId)
             };
 
             if (villaNumberVM.VillaNumber == null)
@@ -159,15 +160,15 @@ namespace WhiteLagoon.Web.Controllers
         [HttpPost]
         public IActionResult Delete(VillaNumberVM villaNumberVm)
         {
-            VillaNumber? obj = _db.VillaNumbers.FirstOrDefault(u => u.Villa_Number == villaNumberVm.VillaNumber.Villa_Number);
+            VillaNumber? obj = _unitOfWork.VillaNumber.Get(u => u.Villa_Number == villaNumberVm.VillaNumber.Villa_Number);
             if (obj == null)
             {
                 TempData["error"] = "刪除失敗！";
                 return RedirectToAction("Error", "Home");               
             }
 
-            _db.Remove(obj);
-            _db.SaveChanges();
+            _unitOfWork.VillaNumber.Remove(obj);
+            _unitOfWork.Save();
             TempData["success"] = "刪除成功！";
             return RedirectToAction(nameof(Index));
         }

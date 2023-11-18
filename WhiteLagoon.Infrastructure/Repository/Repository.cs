@@ -63,6 +63,14 @@ namespace WhiteLagoon.Infrastructure.Repository
             return query.ToList();
         }
 
+        public bool Any(Expression<Func<T, bool>> filter)
+        {
+            IQueryable<T> query = dbSet;
+            var isAny = query.Any(filter);
+
+            return isAny;
+        }
+
         public void Remove(T entity)
         {
             dbSet.Remove(entity);
