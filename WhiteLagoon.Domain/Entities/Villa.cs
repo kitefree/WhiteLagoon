@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,6 +24,8 @@ namespace WhiteLagoon.Domain.Entities
         [DisplayName("描述")]
         [Required]
         public string? Description { get; set; }
+
+        [Range(10,10000)]
         public Double Price { get; set; }
         public int Sqft { get; set; }
         public int Occupancy { get; set; }
@@ -32,5 +35,8 @@ namespace WhiteLagoon.Domain.Entities
         public string? ImageUrl { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<Amenity> VillaAmenity { get; set; }
     }
 }
