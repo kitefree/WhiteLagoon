@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using WhiteLagoon.Application.Common.Interfaces;
 using WhiteLagoon.Infrastructure.Data;
 using WhiteLagoon.Infrastructure.Repository;
@@ -10,6 +11,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 var app = builder.Build();
+
+// 設置預設文化設置
+CultureInfo newCulture = new CultureInfo("zh-TW");
+newCulture.DateTimeFormat.ShortDatePattern = "yyyy-MM-dd";
+
+CultureInfo.DefaultThreadCurrentCulture = newCulture;
+CultureInfo.DefaultThreadCurrentUICulture = newCulture;
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
