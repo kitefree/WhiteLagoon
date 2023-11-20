@@ -9,7 +9,7 @@ using WhiteLagoon.Domain.Entities;
 
 namespace WhiteLagoon.Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -21,6 +21,10 @@ namespace WhiteLagoon.Infrastructure.Data
         public DbSet<VillaNumber> VillaNumbers { get; set; }
 
         public DbSet<Amenity> Amenities { get; set; }
+
+
+        //此項不會在資料庫新建立新表格，而是擴充AspNetUsers資料表
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
