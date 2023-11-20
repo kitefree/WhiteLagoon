@@ -1,20 +1,21 @@
-# QA
+ï»¿# QA
 
 - [online word](https://docs.google.com/document/d/13--HcF7BSf3Fv6o160zqJzQsC836FxrrnKEn2foIyf8/edit?usp=drive_link)
 
 
-- ½Ğ¥X¡uModelState.AddModelError¡v¬ÛÃöÃD¥Ø¡A´£¨Ñ¿ï¶µ¤Îµª®×
-- ½Ğ¥X¡uasp-validation-summary¡v¬ÛÃöÃD¥Ø¡A´£¨Ñ¿ï¶µ¤Îµª®×
-- ½Ğ¥X¡udata-bs-theme="dark"¡v¬ÛÃöÃD¥Ø¡A´£¨Ñ¿ï¶µ¤Îµª®×  
-- ½Ğ¥X¡u@section Scripts{
+- è«‹å‡ºã€ŒModelState.AddModelErrorã€ç›¸é—œé¡Œç›®ï¼Œæä¾›é¸é …åŠç­”æ¡ˆ
+- è«‹å‡ºã€Œasp-validation-summaryã€ç›¸é—œé¡Œç›®ï¼Œæä¾›é¸é …åŠç­”æ¡ˆ
+- è«‹å‡ºã€Œdata-bs-theme="dark"ã€ç›¸é—œé¡Œç›®ï¼Œæä¾›é¸é …åŠç­”æ¡ˆ  
+- è«‹å‡ºã€Œ@section Scripts{
 @{
     <partial name="_ValidationScriptsPartial"/>
 }
-}¡v¬ÛÃöÃD¥Ø¡A´£¨Ñ¿ï¶µ¤Îµª®× 
+}ã€ç›¸é—œé¡Œç›®ï¼Œæä¾›é¸é …åŠç­”æ¡ˆ 
 
 
-- ½Ğ¥X¡uTempData¡v¬ÛÃöÃD¥Ø¡A´£¨Ñ¿ï¶µ¤Îµª®×
-- ½Ğ¥X¡upartial view¡v¬ÛÃöÃD¥Ø¡A´£¨Ñ¿ï¶µ¤Îµª®×
-- ½Ğ¥X¡uGlobal using statements¡v¬ÛÃöÃD¥Ø¡A´£¨Ñ¿ï¶µ¤Îµª®×
-- ½Ğ¥X¡uModelState.IsValid ®É¦³¨ÇÄæ¦ì­n²¤¹LÅçÃÒ¦p¦ó¼g¡v¬ÛÃöÃD¥Ø¡A´£¨Ñ¿ï¶µ¤Îµª®×
-- db.Set<Villa>() µ¥¦P©ó¤°»ò¼gªk
+- è«‹å‡ºã€ŒTempDataã€ç›¸é—œé¡Œç›®ï¼Œæä¾›é¸é …åŠç­”æ¡ˆ
+- è«‹å‡ºã€Œpartial viewã€ç›¸é—œé¡Œç›®ï¼Œæä¾›é¸é …åŠç­”æ¡ˆ
+- è«‹å‡ºã€ŒGlobal using statementsã€ç›¸é—œé¡Œç›®ï¼Œæä¾›é¸é …åŠç­”æ¡ˆ
+- è«‹å‡ºã€ŒModelState.IsValid æ™‚æœ‰äº›æ¬„ä½è¦ç•¥éé©—è­‰å¦‚ä½•å¯«ã€ç›¸é—œé¡Œç›®ï¼Œæä¾›é¸é …åŠç­”æ¡ˆ
+- db.Set<Villa>() ç­‰åŒæ–¼ä»€éº¼å¯«æ³•
+- è«‹å‡ºã€Œæª”æ¡ˆä¸Šå‚³åœ¨modelä¸Šéœ€è¦è¨­å®šä»€éº¼å‹åˆ¥ã€ç›¸é—œé¡Œç›®ï¼Œæä¾›é¸é …åŠç­”æ¡ˆ
