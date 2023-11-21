@@ -50,6 +50,7 @@ namespace WhiteLagoon.Web.Controllers
 
                 if (result.Succeeded)
                 {
+                    
 
                     if (string.IsNullOrEmpty(loginVM.RedirectUrl))
                     {
@@ -85,9 +86,10 @@ namespace WhiteLagoon.Web.Controllers
         }
 
 
-        public IActionResult Register()
+        public IActionResult Register(string returnUrl = null)
         {
-            if(!_roleManager.RoleExistsAsync(SD.Role_Admin).GetAwaiter().GetResult())
+            returnUrl ??= Url.Content("~/");
+            if (!_roleManager.RoleExistsAsync(SD.Role_Admin).GetAwaiter().GetResult())
             {
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).Wait();
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).Wait();
@@ -99,7 +101,9 @@ namespace WhiteLagoon.Web.Controllers
                 {
                     Text = x.Name,
                     Value = x.Name
-                })
+                }),
+                RedirectUrl = returnUrl
+                
             };
             
 
