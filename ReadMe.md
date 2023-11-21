@@ -19,3 +19,4 @@
 - 請出「ModelState.IsValid 時有些欄位要略過驗證如何寫」相關題目，提供選項及答案
 - db.Set<Villa>() 等同於什麼寫法
 - 請出「檔案上傳在model上需要設定什麼型別」相關題目，提供選項及答案
+- 請出「app.UseAuthentication()、app.UseAuthorization()」相關題目，提供選項及答案
