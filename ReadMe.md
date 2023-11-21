@@ -20,3 +20,4 @@
 - db.Set<Villa>() 等同於什麼寫法
 - 請出「檔案上傳在model上需要設定什麼型別」相關題目，提供選項及答案
 - 請出「app.UseAuthentication()、app.UseAuthorization()」相關題目，提供選項及答案
+- 請出「Configuring Application Cookie」相關題目，提供選項及答案
