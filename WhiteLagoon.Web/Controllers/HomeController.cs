@@ -63,7 +63,7 @@ namespace WhiteLagoon.Web.Controllers
             };
 
 
-            return View(homeVM);
+            return PartialView("_VillaList", homeVM);
         }
 
 
