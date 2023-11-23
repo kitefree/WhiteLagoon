@@ -10,7 +10,7 @@
 
     <link rel="stylesheet" href="~/WhiteLagoon.Web.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-
+    <link href="~/css/spinner.css" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -47,7 +47,8 @@
         </nav>
     </header>
     <div class="">
-        <main role="" class="">
+        <main role="main" class="">
+            <div class="loading spinner" style="display:none">Loading</div>
             <partial name="_Notification"/>
             @RenderBody()
         </main>
