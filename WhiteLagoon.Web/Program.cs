@@ -36,11 +36,12 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 var app = builder.Build();
 
 // 設置預設文化設置
-CultureInfo newCulture = new CultureInfo("zh-TW");
-newCulture.DateTimeFormat.ShortDatePattern = "yyyy-MM-dd";
+//CultureInfo newCulture = new CultureInfo("zh-TW");
+//newCulture.DateTimeFormat.ShortDatePattern = "yyyy-MM-dd";
 
-CultureInfo.DefaultThreadCurrentCulture = newCulture;
-CultureInfo.DefaultThreadCurrentUICulture = newCulture;
+
+//CultureInfo.DefaultThreadCurrentCulture = newCulture;
+//CultureInfo.DefaultThreadCurrentUICulture = newCulture;
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
