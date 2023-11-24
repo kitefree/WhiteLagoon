@@ -22,6 +22,8 @@ namespace WhiteLagoon.Infrastructure.Data
 
         public DbSet<Amenity> Amenities { get; set; }
 
+        public DbSet<Booking> Bookings { get; set; }
+
 
         //此項不會在資料庫新建立新表格，而是擴充AspNetUsers資料表
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
