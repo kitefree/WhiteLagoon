@@ -13,13 +13,13 @@
                     </a>
                 </div>
                 <hr />
-                ~~VILLA DETAILS HERE~~
+                <partial name="_VillaDetail" model="@Model.Villa" />
                 <hr />
                 <div class="text-end">
                     <h4 class="text-danger font-weight-bold ">
                         Booking Total :
                         <span style="border-bottom:1px solid #ff6a00">
-                            $11
+                            @Model.TotalCost.ToString("c")
                         </span>
                     </h4>
                 </div>
@@ -27,6 +27,10 @@
         </div>
         <div class="col-12 col-lg-5 p-4 2 mt-4 mt-md-0" style="border-left:1px solid #aaa">
             <form method="post">
+                <input asp-for="VillaId" hidden />
+                <input asp-for="UserId" hidden />                
+                <input asp-for="CheckOutDate" hidden />
+                <input asp-for="Nights" hidden />
                 <div class="row pt-1 mb-3 " style="border-radius:20px; ">
                     <div class="col-12">
                         <h3 class="text-success">Enter Booking Details</h3>
@@ -50,7 +54,7 @@
                 </div>
                 <div class="form-group pt-2">
                     <label asp-for="CheckInDate" class="text-warning">Check in Date</label>
-                    <input asp-for="CheckInDate" type="date" disabled class="form-control" />
+                    <input asp-for="CheckInDate" type="date"  class="form-control" />
                     <span asp-validation-for="CheckInDate" class="text-danger"></span>
                 </div>
                 <div class="form-group pt-2">

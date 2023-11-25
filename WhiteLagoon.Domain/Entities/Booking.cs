@@ -44,5 +44,9 @@ namespace WhiteLagoon.Domain.Entities
         public string? StripePaymentIntentId { get; set; }
 
         public int VillaNumber { get; set; }
+
+        public DateTime ActualCheckInDate { get; set; }
+        public DateTime ActualCheckOutDate { get; set; }
+
     }
 }
