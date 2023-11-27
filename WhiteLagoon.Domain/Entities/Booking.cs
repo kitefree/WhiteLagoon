@@ -33,6 +33,8 @@ namespace WhiteLagoon.Domain.Entities
 
         [Required]
         public DateTime BookingDate { get; set; }
+
+                
         [Required]
         public DateTime CheckInDate { get; set; }
         [Required]
@@ -48,5 +50,7 @@ namespace WhiteLagoon.Domain.Entities
         public DateTime ActualCheckInDate { get; set; }
         public DateTime ActualCheckOutDate { get; set; }
 
+        [NotMapped]
+        public List<VillaNumber> VillaNumbers { get; set; }
     }
 }

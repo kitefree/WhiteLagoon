@@ -12,7 +12,7 @@ namespace WhiteLagoon.Application.Common.Interfaces
     {
         
         void Update(Booking entity);
-        void UpdateStatus(int bookingId, string bookingStatus);
+        void UpdateStatus(int bookingId, string bookingStatus,int villaNumber);
         void UpdateStripePaymentID(int bookingId, string sessionId, string paymentIntentId);
   
         
