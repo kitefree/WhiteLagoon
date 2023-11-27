@@ -99,6 +99,16 @@ namespace WhiteLagoon.Web.Controllers
             return new StatusCodeResult(303);
         }
 
+
+        public IActionResult BookingDetails(int bookingId)
+        {
+            Booking bookingFromDb = _unitOfWork.Booking.Get(u=> u.Id ==bookingId,includeProperties:"User,Villa");
+
+            return View(bookingFromDb);
+
+        }
+
+
         [Authorize]
         public IActionResult BookingConfirmation(int bookingId)
         {
