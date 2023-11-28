@@ -25,7 +25,7 @@ namespace WhiteLagoon.Web.Controllers
         }
 
         [Authorize]        
-        public IActionResult FinalizeBooking(int villaId,DateTime checkInDate,int nights)
+        public IActionResult FinalizeBooking(int villaId,DateTime ciDate,int nights)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -36,9 +36,9 @@ namespace WhiteLagoon.Web.Controllers
             {
                 VillaId = villaId,
                 Villa = _unitOfWork.Villa.Get(u => u.Id == villaId, includeProperties: "VillaAmenity"),
-                CheckInDate = checkInDate,
+                CheckInDate = ciDate,
                 Nights = nights,
-                CheckOutDate = checkInDate.AddDays(nights),
+                CheckOutDate = ciDate.AddDays(nights),
                 UserId = userId,
                 Phone = user.PhoneNumber,
                 Email = user.Email,
@@ -122,7 +122,7 @@ namespace WhiteLagoon.Web.Controllers
 
                 if(session.PaymentStatus == "paid")
                 {
-                    _unitOfWork.Booking.UpdateStatus(bookingFromDb.Id, SD.StatusApproved);
+                    _unitOfWork.Booking.UpdateStatus(bookingFromDb.Id, SD.StatusApproved,0);
                     _unitOfWork.Booking.UpdateStripePaymentID(bookingFromDb.Id,session.Id, session.PaymentIntentId);
 
                     _unitOfWork.Save();
