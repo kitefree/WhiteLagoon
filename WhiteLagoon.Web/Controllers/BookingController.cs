@@ -6,6 +6,7 @@ using System.Security.Claims;
 using WhiteLagoon.Application.Common.Interfaces;
 using WhiteLagoon.Application.Common.Utility;
 using WhiteLagoon.Domain.Entities;
+using WhiteLagoon.Web.ViewModels;
 
 namespace WhiteLagoon.Web.Controllers
 {
@@ -58,7 +59,24 @@ namespace WhiteLagoon.Web.Controllers
 
             booking.Status = SD.StatusPending;
             booking.BookingDate = DateTime.Now;
-            
+
+            var villaNumbersList = _unitOfWork.VillaNumber.GetAll().ToList();
+            var bookiedVillas = _unitOfWork.Booking.GetAll(u => u.Status == SD.StatusApproved || u.Status == SD.StatusCheckedIn).ToList();
+
+            int roomAvailable = SD.VillaRoomsAvailable_Count(villa.Id, villaNumbersList, booking.CheckInDate, booking.Nights, bookiedVillas);
+            if(roomAvailable == 0)
+            {
+                TempData["error"] = "Room has benn sold out!";
+
+                return RedirectToAction(nameof(FinalizeBooking), new
+                {
+                    villaId = booking.VillaId,
+                    ciDate = booking.CheckInDate,
+                    nights = booking.Nights
+                });
+
+            }
+
             _unitOfWork.Booking.Add(booking);
             _unitOfWork.Save();
 
@@ -137,6 +155,67 @@ namespace WhiteLagoon.Web.Controllers
 
         }
 
+        [Authorize]
+        public IActionResult BookingDetails(int bookingId)
+        {
+            Booking bookingFromDb = _unitOfWork.Booking.Get(u => u.Id == bookingId, includeProperties: "User,Villa");
+            if (bookingFromDb.VillaNumber == 0 && bookingFromDb.Status == SD.StatusApproved)
+            {
+                var availableVillaNumber = AssignAvailableVillaNumberByVilla(bookingFromDb.VillaId);
+
+                bookingFromDb.VillaNumbers = _unitOfWork.VillaNumber.GetAll(u => u.VillaId == bookingFromDb.VillaId
+                && availableVillaNumber.Any(x => x == u.Villa_Number)).ToList();
+            }
+            return View(bookingFromDb);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = SD.Role_Admin)]
+        public IActionResult CheckIn(Booking booking)
+        {
+            _unitOfWork.Booking.UpdateStatus(booking.Id, SD.StatusCheckedIn, booking.VillaNumber);
+            _unitOfWork.Save();
+            TempData["Success"] = "Booking Updated Successfully.";
+            return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = SD.Role_Admin)]
+        public IActionResult CheckOut(Booking booking)
+        {
+            _unitOfWork.Booking.UpdateStatus(booking.Id, SD.StatusCompleted, booking.VillaNumber);
+            _unitOfWork.Save();
+            TempData["Success"] = "Booking Updated Successfully.";
+            return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = SD.Role_Admin)]
+        public IActionResult CancelBooking(Booking booking)
+        {
+            _unitOfWork.Booking.UpdateStatus(booking.Id, SD.StatusCancelled, 0);
+            _unitOfWork.Save();
+            TempData["Success"] = "Booking Cancel Successfully.";
+            return RedirectToAction(nameof(BookingDetails), new { bookingId = booking.Id });
+        }
+
+
+        private List<int> AssignAvailableVillaNumberByVilla(int villaId)
+        {
+            List<int> availableVillaNumbers = new();
+            var villaNumbers = _unitOfWork.VillaNumber.GetAll(u => u.VillaId == villaId);
+            var checkedInVilla = _unitOfWork.Booking.GetAll(u => u.VillaId == villaId && u.Status == SD.StatusCheckedIn)
+            .Select(u => u.VillaNumber);
+            foreach (var villaNumber in villaNumbers)
+            {
+                if (!checkedInVilla.Contains(villaNumber.Villa_Number))
+                {
+                    availableVillaNumbers.Add(villaNumber.Villa_Number);                 
+                }
+            }
+
+            return availableVillaNumbers;
+        }
 
         #region API Calls
         [HttpGet]
@@ -144,9 +223,9 @@ namespace WhiteLagoon.Web.Controllers
         public IActionResult GetAll(string status)
         {
             IEnumerable<Booking> objBookings;
-            if(User.IsInRole(SD.Role_Admin))
+            if (User.IsInRole(SD.Role_Admin))
             {
-                objBookings = _unitOfWork.Booking.GetAll(includeProperties:"User,Villa");
+                objBookings = _unitOfWork.Booking.GetAll(includeProperties: "User,Villa");
             }
             else
             {
@@ -157,7 +236,7 @@ namespace WhiteLagoon.Web.Controllers
 
             }
 
-            if(!string.IsNullOrEmpty(status))
+            if (!string.IsNullOrEmpty(status))
             {
                 objBookings = objBookings.Where(u => u.Status.ToLower() == status.ToLower());
             }
