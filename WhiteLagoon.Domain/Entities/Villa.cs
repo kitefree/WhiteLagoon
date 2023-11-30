@@ -16,15 +16,17 @@ namespace WhiteLagoon.Domain.Entities
         
         public int Id { get; set; }
 
-        [Display(Name="名稱")]
+
         [Required]
         [MaxLength(50)]
         public string? Name { get; set; }
 
-        [DisplayName("描述")]
+ 
         [Required]
         public string? Description { get; set; }
 
+
+   
         [Range(10,10000)]
         public Double Price { get; set; }
         public int Sqft { get; set; }
