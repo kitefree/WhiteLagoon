@@ -11,7 +11,7 @@ namespace WhiteLagoon.Domain.Entities
     {
         public string Name { get; set; }
 
-        public DateTime? CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
     }
 }

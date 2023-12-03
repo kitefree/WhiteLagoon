@@ -23,7 +23,7 @@ function loadTotalBookingRadialChart() {
 
             document.querySelector("#sectionBookingCount").append(sectionCurrentCount);
             document.querySelector("#sectionBookingCount").append('since last month');
-            $(".chart-spinner").hide();
+            
 
 
             loadRadialChart('totalBookingsRadialChart', data);

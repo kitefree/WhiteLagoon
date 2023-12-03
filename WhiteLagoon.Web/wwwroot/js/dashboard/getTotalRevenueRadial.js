@@ -23,7 +23,7 @@ function loadTotalRevenueRadialChart() {
 
             document.querySelector("#sectionRevenueCount").append(sectionCurrentCount);
             document.querySelector("#sectionRevenueCount").append('since last month');
-            $(".chart-spinner").hide();
+            
 
 
             loadRadialChart('totalRevenuesRadialChart', data);

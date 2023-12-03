@@ -23,8 +23,7 @@ function loadTotalUserRadialChart() {
 
             document.querySelector("#sectionUserCount").append(sectionCurrentCount);
             document.querySelector("#sectionUserCount").append('since last month');
-            $(".chart-spinner").hide();
-
+            
 
             loadRadialChart('totalUsersRadialChart', data);
 

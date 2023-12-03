@@ -39,7 +39,6 @@ button.accept-policy {
 }
 
 .footer {
-    position: absolute;
     bottom: 0;
     width: 100%;
     white-space: nowrap;
@@ -47,10 +46,9 @@ button.accept-policy {
 }
 
 body {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: auto 1fr auto; /* 這裡的 auto 和 1fr 部分根據實際需求調整 */
     min-height: 100vh;
-    margin: 0;
 }
 
 main {
