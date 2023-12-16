@@ -1,27 +1,2 @@
-﻿# QA
-
-- [online word](https://docs.google.com/document/d/13--HcF7BSf3Fv6o160zqJzQsC836FxrrnKEn2foIyf8/edit?usp=drive_link)
-
-
-- 請出「ModelState.AddModelError」相關題目，提供選項及答案
-- 請出「asp-validation-summary」相關題目，提供選項及答案
-- 請出「data-bs-theme="dark"」相關題目，提供選項及答案  
-- 請出「@section Scripts{
-@{
-    <partial name="_ValidationScriptsPartial"/>
-}
-}」相關題目，提供選項及答案 
-
-
-- 請出「TempData」相關題目，提供選項及答案
-- 請出「partial view」相關題目，提供選項及答案
-- 請出「Global using statements」相關題目，提供選項及答案
-- 請出「ModelState.IsValid 時有些欄位要略過驗證如何寫」相關題目，提供選項及答案
-- db.Set<Villa>() 等同於什麼寫法
-- 請出「檔案上傳在model上需要設定什麼型別」相關題目，提供選項及答案
-- 請出「app.UseAuthentication()、app.UseAuthorization()」相關題目，提供選項及答案
-- 請出「Configuring Application Cookie」相關題目，提供選項及答案
-- 請出「asp-append-version」相關題目，提供選項及答案
-- 請出「Dto vs ViewModel」相關題目，提供選項及答案
-- 請出「Dto」相關題目，提供選項及答案
-- 請出「ViewModel」相關題目，提供選項及答案
+﻿- .NET CORE MVC 8.0
+- Clean 架構練習
